@@ -88,6 +88,17 @@ public class ApiResult<T> implements Serializable {
     }
 
     /**
+     * 失败
+     *
+     * @param data    结果集
+     * @param message 自定义提示信息
+     * @return {code:200,message:自定义,data:自定义}
+     */
+    public static <T> ApiResult<T> failed(T data, String message) {
+        return  new ApiResult<T>(ApiErrorCode.FAILED.getCode(), message, data);
+    }
+
+    /**
      * 失败返回结果
      *
      * @param message 提示信息

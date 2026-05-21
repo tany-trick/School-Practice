@@ -46,8 +46,27 @@ mvn spring-boot:run
 ```
 
 ### 外置配置打包与部署（推荐）
-- 打包时不会将 `src/main/resources/application.yaml` 打进 jar，避免把本地环境配置带给他人。
-- 打包后会自动生成 `target/config/application.yaml.template`，供部署环境填写。
+- 在打包前需要在pom.xml文件的<build><resource></resource></build>资源配置内中将 `src/main/resources/application.yaml` 从资源中排除，避免打包进 jar，避免将本地开发配置暴露到生产环境。
+- 同时添加将`application.yaml.template`打包进jar，供部署环境使用。
+- 相关代码如下，放置在<build></build>构建依赖项中：
+  <!-- 资源配置，确保包含XML文件 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>application.yaml</exclude>
+                </excludes>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
 
 ```bash
 # 1) 打包

@@ -21,6 +21,7 @@ import com.scut.industrial_software.service.IModTasksService;
 import com.scut.industrial_software.service.IModUsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.scut.industrial_software.service.IMonitorService;
+import com.scut.industrial_software.utils.TaskDirectoryManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,9 @@ public class ModTasksServiceImpl extends ServiceImpl<ModTasksMapper, ModTasks> i
 
     @Autowired
     private IMonitorService monitorService;
+
+    @Autowired
+    private TaskDirectoryManager taskDirectoryManager;
 
     @Value("${monitor.local-server.id:1}")
     private Integer localServerId;
@@ -161,6 +165,17 @@ public class ModTasksServiceImpl extends ServiceImpl<ModTasksMapper, ModTasks> i
             throw new ApiException(ApiErrorCode.TASK_CREATION_FAILED);
         }
 
+        Integer taskId = task.getTaskId();
+        if (taskId == null) {
+            throw new ApiException(ApiErrorCode.TASK_CREATION_FAILED);
+        }
+        try {
+            taskDirectoryManager.createTaskDirectories(creatorId, taskId);
+        } catch (Exception ex) {
+            this.removeById(taskId);
+            throw new ApiException(ApiErrorCode.TASK_CREATION_FAILED);
+        }
+
         ModTasksVO modTasksVO = toTaskVOWithDisplayStatus(task);
 
         return ApiResult.success(modTasksVO, "任务创建成功");
@@ -205,6 +220,17 @@ public class ModTasksServiceImpl extends ServiceImpl<ModTasksMapper, ModTasks> i
         boolean IsSave = this.save(task);
 
         if (!IsSave){
+            throw new ApiException(ApiErrorCode.TASK_CREATION_FAILED);
+        }
+
+        Integer taskId = task.getTaskId();
+        if (taskId == null) {
+            throw new ApiException(ApiErrorCode.TASK_CREATION_FAILED);
+        }
+        try {
+            taskDirectoryManager.createTaskDirectories(creatorId, taskId);
+        } catch (Exception ex) {
+            this.removeById(taskId);
             throw new ApiException(ApiErrorCode.TASK_CREATION_FAILED);
         }
 

@@ -73,6 +73,8 @@ ali:
 files:
   upload:
     path: YOUR_UPLOAD_PATH
+  tasks:
+    path: YOUR_TASKS_PATH
 
 # 平台证书生成的相关配置（暂不需要管）
 ptc:
