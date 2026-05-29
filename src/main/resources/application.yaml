@@ -15,7 +15,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/industrial_software?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: zyh101411424
+    password: ty050112
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -65,7 +65,10 @@ ali:
 
 files:
   upload:
-    path: E:/data/files/
+    path: C:\Users\28312\Desktop\实习项目Files\文件上传
+  tasks:
+    path: C:\Users\28312\Desktop\实习项目Files\任务
+
 
 # 平台证书生成的相关配置（暂不需要管）
 ptc:
