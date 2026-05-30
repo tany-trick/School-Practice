@@ -33,8 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import java.io.File;
-
 /**
  * <p>
  *  服务实现类
@@ -180,8 +178,6 @@ public class ModTasksServiceImpl extends ServiceImpl<ModTasksMapper, ModTasks> i
 
         ModTasksVO modTasksVO = toTaskVOWithDisplayStatus(task);
 
-        createFolderByTaskId(task);
-
         return ApiResult.success(modTasksVO, "任务创建成功");
     }
 
@@ -240,27 +236,8 @@ public class ModTasksServiceImpl extends ServiceImpl<ModTasksMapper, ModTasks> i
 
         ModTasksVO modTasksVO = toTaskVOWithDisplayStatus(task);
 
-        createFolderByTaskId(task);
-
         return ApiResult.success(modTasksVO, "任务创建成功");
 
-    }
-
-    private static void createFolderByTaskId(ModTasks task){
-        String userId=task.getCreatorId().toString();
-        String taskId=task.getTaskId().toString();
-        String basePath = "tasks/user_" + userId + "/task_" + taskId;
-        createFolder(basePath + "/input");
-        createFolder(basePath + "/output");
-        createFolder(basePath + "/logs");
-        createFolder(basePath + "/scripts");
-    }
-
-    private static void createFolder(String path) {
-        File folder = new File(path);
-        if (!folder.exists()) {  // 如果不存在才创建
-            folder.mkdirs();     // mkdirs() 会自动创建父目录
-        }
     }
 
     @Override
